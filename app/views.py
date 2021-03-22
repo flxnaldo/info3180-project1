@@ -61,7 +61,7 @@ def properties():
     return render_template('allproperties.html', cribs = cribs)
 
 
-@app.route('/app/static/uploads/<filename>')
+@app.route('/uploads/<filename>')
 def get_image(filename):
     rootdir_ = os.getcwd()
     return send_from_directory(os.path.join(rootdir_,app.config['UPLOAD_FOLDER']), filename)
