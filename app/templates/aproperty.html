@@ -1,0 +1,37 @@
+{%extends 'base.html'%}
+{% block title %}<title>Individual Property Information</title>{% endblock %}
+{%block main%}
+{% include "flash_messages.html" %}
+
+<div>
+    <div class="row">
+        <div class="col-md-4 no-gutters">
+            <img class="col-md-12 height_" src="{{url_for('get_image', filename=crib.photo)}}" alt="Property's Image">
+        </div>
+        <div class="col-md-8"> <!-- change comes from within -->
+            <div class="card-body" id="this">
+                <h5 class="card-title font-weight-bold">{{ crib.title }}</h5>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <p class="badge badge-pill badge-primary p-2">${{ crib.price }}</p>
+                    </div>
+                    <div class="col-sm-1">
+                        <p class="badge badge-pill badge-warning color_ p-2">{{ crib.property_type }}</p>
+                    </div>
+                </div>
+                <p class="card-text">{{ crib.description }}</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="card-text text-muted"><img class="img mr-2 transparency" src="{{ url_for('static', filename='imgs/b_maker.png') }}" alt="A Bed Icon">{{ crib.num_bedrooms }} Bedrooms</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="text-muted"><img class="img mr-2 transparency" src="{{ url_for('static', filename='imgs/S_maker.png') }}" alt="A Showering Icon">{{ crib.num_bathrooms }} Bathrooms</p>
+                    </div>
+                </div>
+                <p class="card-text text-muted"><img class="img mr-1 transparency" src="{{ url_for('static', filename='imgs/L_maker.png') }}" alt="A Location Icon">{{ crib.location }}</p>
+                <a href="#" class="btn card_change bg-primary_">Email Realtor</a> <!-- change comes from within -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

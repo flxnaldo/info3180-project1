@@ -1,0 +1,55 @@
+{%extends 'base.html'%}
+
+{% block title %}<title>Add a Property</title>{% endblock %}
+{%block main%}
+
+{% include 'flash_messages.html' %}
+
+<h1 class="font-weight-bold" id="padd">Add New Property</h1>
+
+<div class="color col-lg-9" id="this"> <!-- change comes from within -->
+  <form action="{{url_for('property')}}" method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <div class="form-group col-md-10" id="this1">
+      {{ form.title.label(class="font-weight-bold") }}
+      {{ form.title(class="form-control") }}
+    </div>
+    <div class="form-group col-md-10">
+      {{ form.description.label(class="font-weight-bold") }}
+      {{ form.description(class="form-control desc_height") }}
+    </div>
+      <div class="form-row col-md-10">
+        <div class="col">
+          <div class="form-group">
+            {{ form.num_bedrooms.label(class="font-weight-bold") }}
+            {{ form.num_bedrooms(placeholder="3", class="form-control") }}
+          </div>
+            <div class="form-group">
+              {{ form.price.label(class="font-weight-bold") }}
+              {{ form.price(placeholder="15,000,000", class="form-control") }}
+            </div>
+        </div>
+        <div class="col-sm-1"></div> <!-- change comes from within -->
+        <div class="col">
+            <div class="form-group">
+              {{ form.num_bathrooms.label(class="font-weight-bold") }}
+              {{ form.num_bathrooms(placeholder="2", class="form-control") }}
+            </div>
+            <div class="form-group">
+              {{ form.property_type.label(class="font-weight-bold") }}
+              {{ form.property_type(class="custom-select") }}
+            </div>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        {{ form.location.label(class="font-weight-bold") }}
+        {{ form.location(placeholder="92 Waterloo Rd.", class="form-control") }}
+      </div>
+      <div class="form-group col-md-6">
+        {{ form.photo.label(class="font-weight-bold") }}
+        {{ form.photo(class="form-control-file", id="customtingz")}}
+      </div>
+      <button type="submit" name="submit" class="btn btn-primary">Add Property</button>
+  </form>  
+</div>
+{%endblock%}

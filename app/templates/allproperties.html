@@ -1,0 +1,24 @@
+{%extends 'base.html'%}
+{% block title %}<title>All Properties</title>{% endblock %}
+{%block main%}
+{% include 'flash_messages.html' %}
+<h1 class="font-weight-bold" id="padd">Properties</h1>
+
+<div class= "row row-cols-3 row-cols-md-4">
+    {% for naldo in cribs%}
+    <div class = "col-md-4 mb-3">
+        <div class = "card h-100"> <!-- change comes from within -->
+            <img class="card-img-top" src="{{url_for('get_image', filename=naldo.photo)}}" alt="Location's Photograph">
+            <div class = "card-body">
+                <h5 class="card-title font-weight-bold"> {{ naldo.title }} </h5>
+                <p class="card-subtitle text-muted mb-3"><img class="img m-1 single" src="{{ url_for('static', filename='imgs/L_maker.png') }}" alt="Location-Icon">{{ naldo.location }}</p>
+                <p class = "badge badge-pill badge-primary p-2 mb-0">${{ naldo.price }}</p>
+            </div>
+            <a href ="{{url_for('aproperty', propertyid=naldo.id)}}">
+                <div class = "card-footer bg-primary_ color_ text-center"> View Property </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

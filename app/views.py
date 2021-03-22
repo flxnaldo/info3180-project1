@@ -4,9 +4,12 @@ Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
-
-from app import app
-from flask import render_template, request, redirect, url_for
+import os
+from app import app, db
+from flask import render_template, request, redirect, url_for, flash, send_from_directory
+from app.forms import PropertyForm
+from app.models import Property
+from werkzeug.utils import secure_filename
 
 
 ###
@@ -22,8 +25,52 @@ def home():
 @app.route('/about/')
 def about():
     """Render the website's about page."""
-    return render_template('about.html', name="Mary Jane")
+    return render_template('about.html', name="Arnoldo Daley")
 
+@app.route('/property', methods=["GET", "POST"])
+def property():
+    pf = PropertyForm()
+    if request.method == 'POST':
+        if pf.validate_on_submit():
+            title = pf.title.data
+            num_bedrooms = pf.num_bedrooms.data
+            num_bathrooms = pf.num_bathrooms.data
+            location = pf.location.data
+            price = pf.price.data
+            property_type = pf.property_type.data
+            description = pf.description.data
+            photo = photo_save(pf.photo.data)
+
+            property_info = Property(title, num_bedrooms, num_bathrooms, location, price, property_type, description, photo)
+            db.session.add(property_info)
+            db.session.commit()
+            flash('Property Added', 'success')
+            return redirect(url_for('properties'))
+    else:
+        flash_errors(pf)
+    return render_template('propertyADD.html', form=pf)
+
+@app.route('/property/<propertyid>')
+def aproperty(propertyid):
+    a_property = db.session.query(Property).filter(Property.id == propertyid).first()
+    return render_template('aproperty.html', crib=a_property)
+
+@app.route('/properties')
+def properties():
+    cribs = db.session.query(Property).all()
+    return render_template('allproperties.html', cribs = cribs)
+
+
+@app.route('/app/static/uploads/<filename>')
+def get_image(filename):
+    rootdir_ = os.getcwd()
+    return send_from_directory(os.path.join(rootdir_,app.config['UPLOAD_FOLDER']), filename)
+
+
+def photo_save(photo):
+    fn = secure_filename(photo.filename)
+    photo.save(os.path.join(app.config['UPLOAD_FOLDER'], fn))
+    return fn
 
 ###
 # The functions below should be applicable to all Flask apps.
